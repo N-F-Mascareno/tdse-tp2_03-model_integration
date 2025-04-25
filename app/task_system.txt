@@ -1,7 +1,47 @@
   task_system.c (task_system.h, task_system_attribute.h) 
    Non-Blocking Code -> System Modeling
+   
+//task_system_attribute.h
+Se definen los distintos eventos del módulo sistema en un enumerativo declarado 
+como task_system_ev.
+Se definen los distintos estados del sistema en un enumerativo declarado 
+como task_system_st_t.
+Define la estructura task_system_dta_t, en la cual se integran un tick, 
+el estado del sistema, el evento del mismo y un flag en forma de booleano.
+
+//task_system.c
+
+Se definen los valores mínimos, medios y máximos 
+
+
+
   
   task_system_interface.c (task_system_interface.h)
    Non-Blocking Code
+
+Se define EVENT_UNDEFINED y MAX_EVENTS como (255) y (16) respectivamente.
+Seguido se define la estructura interna queue_task_a, la cual contiene tres variables 
+del tipo uint32_t, head, tail y count, y un array de largo MAX_EVENTS del tipo 
+task_system_ev_t declarado como queue.
+
+Después se define la función init_queue_event_system, que recibe void y devuelve void, la cual 
+establece el valor de head, tail y count en 0, y define cada elemento del array queue como
+EVENT_UNDEFINED. 
+
+Define la función void put_event_task_system(task_system_ev_t event) la cual aumenta en 1 el 
+valor de count, establece al elemento en la posición head de queue como event y seguido 
+aumenta en 1 el valor de head. Por último si el valor de head alcanza a MAX_EVENTS se 
+restablece su valor a 0.
+
+Define la función task_system_ev_t get_event_task_system(void) la cual primero declara 
+internamente la variable task_system_ev_t event, después decrementa el valor de count en 1, 
+define a event como el elemento en la posición tail de queue y seguido define al mismo 
+elemento de queue como EVENT_UNDEFINED. Al final si el valor de tail llega hasta MAX_EVENTS 
+lo restablece a 0 y la función devuelve a event.
+
+Define al final la función bool any_event_task_system(void) que devuelve TRUE solo si 
+el valor de head es distinto del de tail, es decir, solo si hay algún evento distinto de 
+EVENT_UNDEFINED.
+
 
 ...
